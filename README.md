@@ -1,7 +1,7 @@
 # arduino-midi-player_uno_atmega2560
 lay multiple tones on Arduino (UNO and ATMEGA2560) from MIDI files
 
-Original version designed by Fang Lu
+Original version designed by [Fang Lu](https://github.com/ilufang)
 https://github.com/ilufang/arduino-midi-player
 
 Code has been modified to run on an ATmega2560 as well
