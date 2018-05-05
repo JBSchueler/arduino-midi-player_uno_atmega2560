@@ -151,10 +151,10 @@ for (var i = 0; i < sine_sample_size; i++) {
 	sine_sample.push(128+Math.round(128*Math.sin(2*Math.PI*i/sine_sample_size)));
 }
 
-file += "const uint8_t sine[] = {"+sine_sample.join(",")+"};\n";
 file += "#define SINE_SAMPLE_SIZE "+sine_sample_size+"\n";
+file += "const uint8_t sine[SINE_SAMPLE_SIZE] = {"+sine_sample.join(",")+"};\n";
 file += "#define TRACKS "+minTrack+"\n";
-file += "#define TEMPO "+tempo+"\n";
+file += "#define TEMPO "+Math.round(tempo*256)+" // Fixed Point value ("+tempo+")\n";
 file += "#define SONG_LEN "+notes.length+"\n";
 file += "PROGMEM const uint8_t notes[] = {"+notes.join(",")+"};\n";
 file += "PROGMEM const uint16_t params[] = {"+note_params.join(",")+"};\n";

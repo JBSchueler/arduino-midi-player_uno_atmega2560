@@ -12,7 +12,15 @@
 #include "sequence.h"
 
 #define MAX_NOTE 128
+#if TRACKS <= 1
+#define KEYBUF_SIZE 1
+#elif TRACKS <= 2
+#define KEYBUF_SIZE 2
+#elif TRACKS <= 4
 #define KEYBUF_SIZE 4
+#else
+#define KEYBUF_SIZE 8
+#endif
 
 /*!brief
  * These are the tone increment values of a note of octave 10
@@ -24,7 +32,8 @@ volatile const uint16_t incrtone[16] = { 29528, 31284, 33144, 35115, 37203, 3941
 
 #define NOTE_NUMBER(index) pgm_read_byte_near(notes+index)
 #define NOTE_DELAY(index) (pgm_read_word_near(params+index)>>4)
-#define NOTE_VEL(index) (pgm_read_word_near(params+index)&15)
+#define NOTE_VEL(index)   (pgm_read_word_near(params+index)&15)
+#define NOTE_PARAM(index) (pgm_read_word_near(params+index))
 
 uint8_t volatile active_keys[KEYBUF_SIZE];
 uint8_t volatile key_vels[MAX_NOTE];

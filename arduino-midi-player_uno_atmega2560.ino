@@ -127,6 +127,8 @@ ISR(TIMER2_OVF_vect)
   OCR2A = phaccu_all>>3;
 #elif KEYBUF_SIZE == 16
   OCR2A = phaccu_all>>4;
+#elif KEYBUF_SIZE == 32
+  OCR2A = phaccu_all>>5;
 #else
   OCR2A = phaccu_all/KEYBUF_SIZE;
 #endif
@@ -140,4 +142,3 @@ ISR(TIMER2_OVF_vect)
     timer_micro=31;
   }
 }
-

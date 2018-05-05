@@ -55,8 +55,9 @@ void loadNextEvent() {
 		return;
 	}
 
-	uint16_t new_length = NOTE_DELAY(ptr)*TEMPO;
-	key_vels[NOTE_NUMBER(ptr)-1] = NOTE_VEL(ptr);
+  uint16_t noteParam = NOTE_PARAM(ptr);
+	uint16_t new_length = (((uint32_t)(noteParam>>4))*TEMPO)>>8;
+	key_vels[NOTE_NUMBER(ptr)-1] = (uint8_t)noteParam&0x0F;
 
 	++ptr;
 	if (new_length == 0)
