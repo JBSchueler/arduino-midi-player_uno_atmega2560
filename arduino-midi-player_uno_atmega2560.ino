@@ -52,20 +52,19 @@ void setup()
 
 void loop()
 {
-  while(true) {
-    if (timer_milli > event_length) { // wait for the next midi event
-      TIMSK2 &= ~(1<<TOIE2);
-      loadNextEvent();
-      // calculate new DDS tuning word
+  if ( timer_milli == 0 )  // wait for the next midi event
+  {
+    TIMSK2 &= ~(1<<TOIE2);
+    loadNextEvent();
+    // calculate new DDS tuning word
 
-      for (uint8_t i=0; i<KEYBUF_SIZE; i++ )
-      {
-        tword_m[i]=PIANOINC(active_keys[i]);
-        if (!tword_m[i]) phaccu[i].ulong = 0;
-      }
-      timer_milli=0;
-      TIMSK2 |= (1<<TOIE2);
+    for (uint8_t i=0; i<KEYBUF_SIZE; i++ )
+    {
+      tword_m[i]=PIANOINC(active_keys[i]);
+      if (!tword_m[i]) phaccu[i].ulong = 0;
     }
+    timer_milli = event_length;
+    TIMSK2 |= (1<<TOIE2);
   }
 }
 
@@ -74,18 +73,17 @@ void loop()
  *
  * set pre-scaler to 1, PWM mode to phase correct PWM,  16000000/510 = 31372.55 Hz clock
  */
-void setupTimer2() {
+void setupTimer2()
+{
   // Timer2 Clock Pre-scaler to : 1
   TCCR2B &= ~((1<<CS22) | (1<<CS21) | (1<<CS20)); // clear bits
   TCCR2B |=   (0<<CS22) | (0<<CS21) | (1<<CS20);  // set bits
-
 
   // Timer2 PWM Mode set to Phase Correct PWM
   TCCR2A &= ~((1<<COM2A1) | (1<<COM2A0) | (1<<WGM21) | (1<<WGM20)); // clear bits
   TCCR2A |=   (1<<COM2A1) | (0<<COM2A0) | (0<<WGM21) | (1<<WGM20);  // set bits
   TCCR2B &= ~(1<<WGM22); // clear bits
 //  TCCR2B |=  (0<<WGM22);  // set bits
-
 
   // initialize DDS tuning word
   for ( uint8_t i=0; i<KEYBUF_SIZE; i++ )
@@ -108,7 +106,8 @@ void setupTimer2() {
  * FOUT = (M (REFCLK)) / (2 exp 32)
  * runtime : 8 microseconds ( inclusive push and pop)
  */
-ISR(TIMER2_OVF_vect) {
+ISR(TIMER2_OVF_vect)
+{
   uint16_t phaccu_all=0;
 
   for ( uint8_t i=0; i<KEYBUF_SIZE; i++ )
@@ -134,7 +133,10 @@ ISR(TIMER2_OVF_vect) {
 
   // Increment timing counter
   if( !(--timer_micro) ) {
-    ++timer_milli;
+    if ( timer_milli > 0 )
+    {
+      timer_milli--;
+    }
     timer_micro=31;
   }
 }
