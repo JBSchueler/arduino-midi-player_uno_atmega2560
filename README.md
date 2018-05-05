@@ -11,14 +11,14 @@ This will enabling playing bigger midi files
 Arduino MIDI Player
 ===================
 
-This program plays MIDI music on Arduino by generating analog/PWM waves on a port connected to a speaker/buzzer. We use timer 2 to do direct digital synthesis (DDS).
+This program plays MIDI music on Arduino by generating analog/PWM waves on a pin connected to a speaker/buzzer. We use timer 2 to do direct digital synthesis (DDS).
 
 Features
 --------
 
 - **Chords/multiple notes!** The DDS can add multiple waves together on a single timer and single port. Unlike `tone()` which you can only run one frequency at any time.
 - **Sine waves!** You can define any arbitrary function/wave sample to use as the instrument in `smf2seq.js`. No more square waves of the built-in `tone()` function.
-- **Tested on UNO!** Though it might not work directly on other models, after some modification the concept should work on any Arduino. (since UNO is the crappiest model)
+- **Tested on UNO and ATmega2560!** Though it might not work directly on other models, after some modification the concept should work on any Arduino. (since UNO is the crappiest model)
 
 
 How to use
@@ -26,10 +26,9 @@ How to use
 
 **Hardware**
 
-1. Connect buzzer/speaker to PWM port 11. Use a proper resister.
+1. Connect buzzer/speaker to PWM pin 11 (UNO) or pin 10 (ATmega2560) . Use a proper resister.
 2. A variable-resistance resister is recommended to adjust the volume.
-3. (Optional) Connect LEDs to port 2-7.
-4. Ground everything.
+3. Ground everything.
 
 **Software**
 
